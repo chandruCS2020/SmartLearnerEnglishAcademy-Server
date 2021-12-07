@@ -1,9 +1,12 @@
 const express=require("express"),
     app=express(),
-    userRouter=require("./routes/userRoutes");
+    userRouter=require("./routes/userRoutes"),
+    cookieParser=require("cookie-parser");
 
 //Midbleware
 app.use(express.json());
+app.use(cookieParser(process.env.JWTCOOKIESECRET))
+
 
 //Routers Merge Point
 app.use(userRouter);

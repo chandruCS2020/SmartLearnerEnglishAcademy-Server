@@ -20,6 +20,7 @@
   "homepage": "https://github.com/jala-R/SmartLearnerEnglishAcademy-Server#readme",
   "dependencies": {
     "bcryptjs": "^2.4.3",
+    "cookie-parser": "^1.4.6",
     "env-cmd": "^10.1.0",
     "express": "^4.17.1",
     "jsonwebtoken": "^8.5.1",
