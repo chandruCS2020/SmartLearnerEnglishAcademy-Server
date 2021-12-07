@@ -1,0 +1,27 @@
+{
+  "name": "SmartLearnerEnglishAcademy-Server",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "dev": "./node_modules/.bin/env-cmd -f ./envs/dev.env nodemon ./src/index.js",
+    "start": "node ./src/index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jala-R/SmartLearnerEnglishAcademy-Server.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/jala-R/SmartLearnerEnglishAcademy-Server/issues"
+  },
+  "homepage": "https://github.com/jala-R/SmartLearnerEnglishAcademy-Server#readme",
+  "dependencies": {
+    "env-cmd": "^10.1.0"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.15"
+  }
+}
