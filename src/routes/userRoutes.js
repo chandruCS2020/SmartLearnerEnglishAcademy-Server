@@ -13,7 +13,7 @@ app.get("/signup-email",async (req,res)=>{
     try{
         let token=jwt.sign({email:req.query.email},process.env.JWTEMAILSECRET,{expiresIn:60*10});
         let url=`${req.protocol}://${req.headers.host}/email-verification/${token}`
-        console.log(url);
+        // console.log(url);
         await email(req.query.email,process.env.SUBJECT,url)
         res.send()
     }catch(err){
@@ -29,7 +29,6 @@ app.get("/email-verification/:token",(req,res)=>{
         const {email}=jwt.verify(req.params.token,process.env.JWTEMAILSECRET);
         res.cookie("email",email,{
             maxAge:1000*60*10,
-            path:"/signup-email",
             signed:true
         })
         res.send();
@@ -40,6 +39,8 @@ app.get("/email-verification/:token",(req,res)=>{
 
 app.post("/signup-email",isEmailVerified,async (req,res)=>{
     try{
+        res.set("Access-Control-Allow-Origin","http://localhost:3001");
+        res.set("Access-Control-Allow-Credentials","true");
         if(!req.body.password)throw new Error("password required")
         let newUser=new User({
             firstName:req.body.firstName,
@@ -58,6 +59,14 @@ app.post("/signup-email",isEmailVerified,async (req,res)=>{
     }catch(err){
         res.status(400).send(err.message);
     }
+})
+
+
+app.options("/signup-email",(req,res)=>{
+    res.set("Access-Control-Allow-Origin","http://localhost:3001");
+    res.set("Access-Control-Allow-Credentials","true");
+    res.set("Access-Control-Allow-Headers","Content-type");
+    res.send();
 })
 
 //login-email-password
