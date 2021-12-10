@@ -3,7 +3,9 @@ const express=require("express"),
     email=require("../helper/email"),
     jwt=require("jsonwebtoken"),
     isEmailVerified=require("../helper/isEmailVerified"),
-    User=require("../db/user");
+    User=require("../db/user"),
+    axios=require("axios"),
+    loginMiddleWare=require("../helper/loginMiddleWare")
 
 
 
@@ -14,7 +16,7 @@ app.get("/signup-email",async (req,res)=>{
         let token=jwt.sign({email:req.query.email},process.env.JWTEMAILSECRET,{expiresIn:60*10});
         let url=`${req.protocol}://${req.headers.host}/email-verification/${token}`
         // console.log(url);
-        await email(req.query.email,process.env.SUBJECT,url)
+        await email(req.query.email,process.env.SUBJECT,`<a href=${url} target='_blank'>click here</a>`)
         res.send()
     }catch(err){
         res.status(400).send(err.message);
@@ -39,8 +41,6 @@ app.get("/email-verification/:token",(req,res)=>{
 
 app.post("/signup-email",isEmailVerified,async (req,res)=>{
     try{
-        res.set("Access-Control-Allow-Origin","http://localhost:3001");
-        res.set("Access-Control-Allow-Credentials","true");
         if(!req.body.password)throw new Error("password required")
         let newUser=new User({
             firstName:req.body.firstName,
@@ -49,25 +49,21 @@ app.post("/signup-email",isEmailVerified,async (req,res)=>{
             email:req.signedCookies.email,
             admin:false
         });
-        newUser=await newUser.save();
         newUser.createAuthJwt();
+        newUser=await newUser.save();
         res.cookie("sid",newUser.jwt,{
             httpOnly:true
         })
-        res.clearCookie("email",{path:"/signup-email"})
+        res.clearCookie("email",{path:"/"})
         return res.send(newUser);
     }catch(err){
+        if(err.code===11000)return res.status(400).send(`${req.signedCookies.sid.email} is existed`)
         res.status(400).send(err.message);
     }
 })
 
 
-app.options("/signup-email",(req,res)=>{
-    res.set("Access-Control-Allow-Origin","http://localhost:3001");
-    res.set("Access-Control-Allow-Credentials","true");
-    res.set("Access-Control-Allow-Headers","Content-type");
-    res.send();
-})
+
 
 //login-email-password
 // TODO
@@ -82,12 +78,144 @@ app.post("/login-password",async (req,res)=>{
         await user.authenticate(password)
         await user.save();
         res.cookie("sid",user.jwt,{
-            httpOnly:true
+            httpOnly:true,
+            maxAge:1000*60*60*24*7
         })
         res.send("login succesfull");
     }catch(err){
         res.status(400).send(err.message);
     }
 })
+
+
+//google-auth
+
+//TODO
+//req hit -> return link with client id
+
+app.get("/google-auth-signup",(req,res)=>{
+    let url=`https://accounts.google.com/o/oauth2/v2/auth?response_type=code&client_id=${process.env.GOOGLECLIENTID}&scope=openid%20email%20profile&redirect_uri=${req.protocol}%3A//${req.headers.host}/signup-oauth-google-callback&state=aroundTrip`
+    res.send(url)
+})
+
+//TODO
+//got code -> exchange token -> get id with token -> send res +cookie
+//(done)        (done)                  (done)                  ()
+app.get("/signup-oauth-google-callback",async (req,res)=>{
+    try{
+        let {data}=await axios({
+            url:"https://oauth2.googleapis.com/token",
+            method:"post",
+            headers:{
+                "Content-Type": "application/x-www-form-urlencoded"
+            },
+            data:`code=${req.query.code}&client_id=${process.env.GOOGLECLIENTID}&client_secret=${process.env.GOOGLESECRET}&redirect_uri=${req.protocol}%3A//${req.headers.host}/signup-oauth-google-callback&grant_type=authorization_code`
+        })
+        let {data:userInfo}=await axios({
+            url:"https://www.googleapis.com/oauth2/v2/userinfo",
+            method:"get",
+            headers:{
+                Authorization:`Bearer ${data.access_token}`
+            }
+        })
+        res.cookie("gid",{
+            email:userInfo.email,
+            id:userInfo.id
+        },{
+            signed:true,
+            maxAge:1000*60*10,
+        })
+        res.send();
+    }catch(err){
+        res.status(400).send(err);
+    }
+})
+
+app.post("/signup-oauth",isEmailVerified,async (req,res)=>{
+    try{
+        res.set("Access-Control-Allow-Origin","http://localhost:3001");
+        res.set("Access-Control-Allow-Credentials","true");
+        let newUser=new User({
+            firstName:req.body.firstName,
+            lastName:req.body.lastName,
+            email:req.signedCookies.gid.email,
+            googleLinked:req.signedCookies.gid.id,
+            admin:false
+        });
+        newUser.createAuthJwt();
+        await newUser.save();
+        res.cookie("sid",newUser.jwt,{
+            httpOnly:true,
+            maxAge:1000*60*60*24*7
+        })
+        res.clearCookie("gid",{path:"/"})
+        return res.send(newUser);
+    }catch(err){
+        if(err.code===11000)return res.status(400).send(`${req.signedCookies.gid.email} is existed`)
+        res.status(400).send(err.message);
+    }
+})
+
+app.options("/signup-oauth",(req,res)=>{
+    res.set("Access-Control-Allow-Origin","http://localhost:3001");
+    res.set("Access-Control-Allow-Credentials","true");
+    res.set("Access-Control-Allow-Headers","Content-type");
+    res.send();
+})
+
+
+app.get("/google-auth-login",(req,res)=>{
+    let url=`https://accounts.google.com/o/oauth2/v2/auth?response_type=code&client_id=${process.env.GOOGLECLIENTID}&scope=openid%20email%20profile&redirect_uri=${req.protocol}%3A//${req.headers.host}/login-oauth-google-callback&state=aroundTrip`
+    res.send(url)
+})
+
+app.get("/login-oauth-google-callback",async (req,res)=>{
+    try{
+        let {data}=await axios({
+            url:"https://oauth2.googleapis.com/token",
+            method:"post",
+            headers:{
+                "Content-Type": "application/x-www-form-urlencoded"
+            },
+            data:`code=${req.query.code}&client_id=${process.env.GOOGLECLIENTID}&client_secret=${process.env.GOOGLESECRET}&redirect_uri=${req.protocol}%3A//${req.headers.host}/login-oauth-google-callback&grant_type=authorization_code`
+        })
+        let {data:userInfo}=await axios({
+            url:"https://www.googleapis.com/oauth2/v2/userinfo",
+            method:"get",
+            headers:{
+                Authorization:`Bearer ${data.access_token}`
+            }
+        })
+        let user=await User.findOne({googleLinked:userInfo.id})
+        if(!user)throw new Error("invalid credentials");
+        user.createAuthJwt();
+        await user.save();
+        res.cookie("sid",user.jwt,{
+            httpOnly:true,
+            maxAge:1000*60*60*24*7
+        })
+        console.log("success")
+        res.send("login succesfull");
+    }catch(err){
+        res.status(400).send(err.message);
+    }
+})
+
+
+app.get("/isLoggedIn",loginMiddleWare,(req,res)=>{
+    res.send();
+})
+
+app.get("/logout",loginMiddleWare,async (req,res)=>{
+    try{
+        req.user.jwt=undefined;
+        await req.user.save();
+        res.clearCookie("sid",{path:"/"});
+        res.send();
+    }catch(err){
+        res.status(400).send(err.message)
+    }
+})
+
 
 module.exports=app;
