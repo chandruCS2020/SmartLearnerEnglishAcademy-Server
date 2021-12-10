@@ -41,8 +41,6 @@ app.get("/email-verification/:token",(req,res)=>{
 
 app.post("/signup-email",isEmailVerified,async (req,res)=>{
     try{
-        res.set("Access-Control-Allow-Origin","http://localhost:3001");
-        res.set("Access-Control-Allow-Credentials","true");
         if(!req.body.password)throw new Error("password required")
         let newUser=new User({
             firstName:req.body.firstName,
@@ -65,12 +63,7 @@ app.post("/signup-email",isEmailVerified,async (req,res)=>{
 })
 
 
-app.options("/signup-email",(req,res)=>{
-    res.set("Access-Control-Allow-Origin","http://localhost:3001");
-    res.set("Access-Control-Allow-Credentials","true");
-    res.set("Access-Control-Allow-Headers","Content-type");
-    res.send();
-})
+
 
 //login-email-password
 // TODO
