@@ -1,6 +1,6 @@
 const nodemailer=require("nodemailer");
 
-async function sendEmail(to,subject,link){
+async function sendEmail(to,subject,body){
     let transporter = nodemailer.createTransport({
         host: "smtp.gmail.com",
         port: 465,
@@ -12,10 +12,10 @@ async function sendEmail(to,subject,link){
       });
     
       transporter.sendMail({
-        from: process.env.EMAIL, 
+        from: "jala9952@gmail.com", 
         to, 
         subject,
-        html: `<a href=${link} target='_blank'>click here</a>`,
+        html: body
       })
       .catch((err)=>{
           console.log(err.message);

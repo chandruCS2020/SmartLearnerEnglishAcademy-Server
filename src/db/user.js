@@ -16,7 +16,8 @@ const userSchema=new mongoose.Schema({
     email:{
         type:String,
         required:true,
-        unique:true
+        unique:true,
+        dropDups: true
     },
     password:{
         type:String
@@ -44,7 +45,7 @@ userSchema.pre("save",async function(){
 const User=mongoose.model("User",userSchema);
 
 User.prototype.createAuthJwt=function(){
-    this.jwt=jwt.sign({id:this._id},process.env.JWTSECRET,{expiresIn:60*60*24*3})
+    this.jwt=jwt.sign({id:this._id},process.env.JWTSECRET,{expiresIn:60*60*24*7})
 }
 
 
