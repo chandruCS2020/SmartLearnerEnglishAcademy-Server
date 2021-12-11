@@ -33,6 +33,8 @@ const userSchema=new mongoose.Schema({
     jwt:{
         type:String
     }
+},{
+    timestamps:true
 })
 
 userSchema.pre("save",async function(){
@@ -50,6 +52,7 @@ User.prototype.createAuthJwt=function(){
 
 
 User.prototype.authenticate=async function(password){
+    if(!this.password)throw new Error("invaild credentials")
     let res=await bcryptjs.compare(password,this.password);
     if(!res)throw new Error("invalid credentials")
     this.createAuthJwt()
