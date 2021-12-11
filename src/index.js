@@ -2,8 +2,9 @@ const express=require("express"),
     app=express(),
     userRouter=require("./routes/userRoutes"),
     cookieParser=require("cookie-parser"),
-    feedbackRouter=require("./routes/feedbackRoutes")
-    contactRouter=require("./routes/contactRoutes");
+    feedbackRouter=require("./routes/feedbackRoutes"),
+    contactRouter=require("./routes/contactRoutes"),
+    adminRouter=require("./routes/adminRoutes");
 require("./db/connect");
 
 
@@ -22,6 +23,8 @@ app.use((req,res,next)=>{
 app.use(userRouter);
 app.use(feedbackRouter);
 app.use(contactRouter)
+app.use(adminRouter)
+
 
 app.options("/*",(req,res)=>{
     res.send();

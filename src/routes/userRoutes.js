@@ -52,7 +52,8 @@ app.post("/signup-email",isEmailVerified,async (req,res)=>{
         newUser.createAuthJwt();
         newUser=await newUser.save();
         res.cookie("sid",newUser.jwt,{
-            httpOnly:true
+            httpOnly:true,
+            maxAge:1000*60*60*24*7
         })
         res.clearCookie("email",{path:"/"})
         return res.send(newUser);
@@ -133,8 +134,6 @@ app.get("/signup-oauth-google-callback",async (req,res)=>{
 
 app.post("/signup-oauth",isEmailVerified,async (req,res)=>{
     try{
-        res.set("Access-Control-Allow-Origin","http://localhost:3001");
-        res.set("Access-Control-Allow-Credentials","true");
         let newUser=new User({
             firstName:req.body.firstName,
             lastName:req.body.lastName,
@@ -156,12 +155,7 @@ app.post("/signup-oauth",isEmailVerified,async (req,res)=>{
     }
 })
 
-app.options("/signup-oauth",(req,res)=>{
-    res.set("Access-Control-Allow-Origin","http://localhost:3001");
-    res.set("Access-Control-Allow-Credentials","true");
-    res.set("Access-Control-Allow-Headers","Content-type");
-    res.send();
-})
+
 
 
 app.get("/google-auth-login",(req,res)=>{
@@ -216,6 +210,9 @@ app.get("/logout",loginMiddleWare,async (req,res)=>{
         res.status(400).send(err.message)
     }
 })
+
+
+
 
 
 module.exports=app;
