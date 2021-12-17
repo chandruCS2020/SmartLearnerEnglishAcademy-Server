@@ -34,7 +34,7 @@ app.get("/email-verification/:token",(req,res)=>{
             maxAge:1000*60*10,
             signed:true
         })
-        res.send();
+        res.redirect("http://localhost:3001/Register")
     }catch(err){
         res.status(400).send(err.message);
     }
@@ -79,13 +79,22 @@ app.post("/login-email",async (req,res)=>{
         let user=await User.findOne({email});
         if(!user)throw new Error("invalid credentials")
         await user.authenticate(password)
-        await user.save();
-        res.cookie("sid",user.jwt,{
-            maxAge:1000*60*60*24*7,
-            httpOnly:true
-        })
-        // console.log(user.jwt)
-        res.send("login succesfull");
+        if(user.admin){
+            await user.save();
+            res.cookie("sid",user.jwt,{
+                maxAge:1000*60*60*24*7,
+                httpOnly:true
+            })
+            res.send("admin");
+        }else{
+            await user.save();
+            res.cookie("sid",user.jwt,{
+                maxAge:1000*60*60*24*7,
+                httpOnly:true
+            })
+            res.send("login succesfull");
+        }
+        
     }catch(err){
         res.status(400).send(err.message);
     }
