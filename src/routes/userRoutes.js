@@ -17,7 +17,8 @@ app.get("/signup-email",async (req,res)=>{
         let url=`${req.protocol}://${req.headers.host}/email-verification/${token}`
         // console.log(url);
         await email(req.query.email,process.env.SUBJECT,`<a href=${url} target='_blank'>click here</a>`)
-        res.send()
+        var computerSciencePortal = "Verification Link has sent to Mail";
+        res.send(computerSciencePortal);
     }catch(err){
         res.status(400).send(err.message);
     }
@@ -58,7 +59,7 @@ app.post("/signup-email",isEmailVerified,async (req,res)=>{
         res.clearCookie("email",{path:"/"})
         return res.send(newUser);
     }catch(err){
-        if(err.code===11000)return res.status(400).send(`${req.signedCookies.sid.email} is existed`)
+        if(err.code===11000)return res.status(400).send(`${req.signedCookies.email} is existed`)
         res.status(400).send(err.message);
     }
 })
@@ -71,17 +72,19 @@ app.post("/signup-email",isEmailVerified,async (req,res)=>{
 // route -> check email password in db -> error 
 //                                     ->succes -> cookie
 
-app.post("/login-password",async (req,res)=>{
+app.post("/login-email",async (req,res)=>{
     try{
+        res.set("access-control-expose-headers", "Set-Cookie")
         const {email,password}=req.body;
         let user=await User.findOne({email});
         if(!user)throw new Error("invalid credentials")
         await user.authenticate(password)
         await user.save();
         res.cookie("sid",user.jwt,{
-            httpOnly:true,
-            maxAge:1000*60*60*24*7
+            maxAge:1000*60*60*24*7,
+            httpOnly:true
         })
+        // console.log(user.jwt)
         res.send("login succesfull");
     }catch(err){
         res.status(400).send(err.message);
@@ -188,7 +191,7 @@ app.get("/login-oauth-google-callback",async (req,res)=>{
             httpOnly:true,
             maxAge:1000*60*60*24*7
         })
-        console.log("success")
+        // console.log("success")
         res.send("login succesfull");
     }catch(err){
         res.status(400).send(err.message);
