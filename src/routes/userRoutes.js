@@ -34,7 +34,11 @@ app.get("/email-verification/:token",(req,res)=>{
             maxAge:1000*60*10,
             signed:true
         })
+<<<<<<< HEAD
         res.redirect("http://localhost:3001/Register")
+=======
+        res.redirect(process.env.FRONTENDURL+"/Register");
+>>>>>>> master
     }catch(err){
         res.status(400).send(err.message);
     }
@@ -79,6 +83,7 @@ app.post("/login-email",async (req,res)=>{
         let user=await User.findOne({email});
         if(!user)throw new Error("invalid credentials")
         await user.authenticate(password)
+<<<<<<< HEAD
         if(user.admin){
             await user.save();
             res.cookie("sid",user.jwt,{
@@ -96,6 +101,16 @@ app.post("/login-email",async (req,res)=>{
             res.send("login succesfull");
         }
         
+=======
+        await user.save();
+        res.cookie("sid",user.jwt,{
+            httpOnly:true,
+            maxAge:1000*60*60*24*7
+        })
+        if(user.admin)return res.send("admin");
+        // console.log(process.env.)
+        res.send();
+>>>>>>> master
     }catch(err){
         res.status(400).send(err.message);
     }
@@ -144,7 +159,11 @@ app.get("/signup-oauth-google-callback",async (req,res)=>{
             maxAge:1000*60*10,
             
         })
+<<<<<<< HEAD
         res.redirect("http://localhost:3001/Google-oauth-signup");
+=======
+        res.redirect(process.env.FRONTENDURL+"Google-oauth-signup");
+>>>>>>> master
     }catch(err){
         res.status(400).send(err);
     }
@@ -166,7 +185,7 @@ app.post("/signup-oauth",isEmailVerified,async (req,res)=>{
             maxAge:1000*60*60*24*7
         })
         res.clearCookie("gid",{path:"/"})
-        return res.send(newUser);
+        return res.send();
     }catch(err){
         if(err.code===11000)return res.status(400).send(`${req.signedCookies.gid.email} is existed`)
         res.status(400).send(err.message);
@@ -207,7 +226,12 @@ app.get("/login-oauth-google-callback",async (req,res)=>{
             maxAge:1000*60*60*24*7
         })
         // console.log("success")
+<<<<<<< HEAD
         res.redirect("http://localhost:3001/");
+=======
+        res.clearCookie("gid",{path:"/"})
+        res.redirect(process.env.FRONTENDURL);
+>>>>>>> master
     }catch(err){
         res.status(400).send(err.message);
     }

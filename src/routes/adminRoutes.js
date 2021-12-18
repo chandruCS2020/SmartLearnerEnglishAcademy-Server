@@ -9,10 +9,6 @@ const express=require("express"),
 // app.use(adminveriifaction)
 
 
-app.get("/isAdmin",adminveriifaction,(req,res)=>{
-    res.send();
-})
-
 
 app.get("/get-users",adminveriifaction,async (req,res)=>{
     try{

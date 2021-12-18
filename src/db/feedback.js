@@ -23,9 +23,13 @@ const feedbackSchema=new mongoose.Schema({
         min:0,
         max:5
     }
+<<<<<<< HEAD
 },{
     timestamps:true
 })
+=======
+},{timestamps:true})
+>>>>>>> master
 
 const FeedBack=mongoose.model("feedback",feedbackSchema);
 
