@@ -138,7 +138,7 @@ app.get("/signup-oauth-google-callback",async (req,res)=>{
             signed:true,
             maxAge:1000*60*10,
         })
-        res.send();
+        res.redirect("http://localhost:3001/Google-oauth-signup");
     }catch(err){
         res.status(400).send(err);
     }
@@ -201,7 +201,7 @@ app.get("/login-oauth-google-callback",async (req,res)=>{
             maxAge:1000*60*60*24*7
         })
         // console.log("success")
-        res.send("login succesfull");
+        res.redirect("http://localhost:3001/");
     }catch(err){
         res.status(400).send(err.message);
     }
