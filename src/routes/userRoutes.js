@@ -61,7 +61,7 @@ app.post("/signup-email",isEmailVerified,async (req,res)=>{
         //     maxAge:1000*60*60*24*7
         // })
         res.clearCookie("email",{path:"/"})
-        return res.send(newUser.jwt);
+        res.send(newUser.jwt);
     }catch(err){
         if(err.code===11000)return res.status(400).send(`${req.signedCookies.email} is existed`)
         res.status(400).send(err.message);
