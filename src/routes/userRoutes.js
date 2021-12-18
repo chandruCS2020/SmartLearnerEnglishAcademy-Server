@@ -197,7 +197,9 @@ app.get("/login-oauth-google-callback",async (req,res)=>{
         await user.save();
         res.cookie("sid",user.jwt,{
             httpOnly:true,
-            maxAge:1000*60*60*24*7
+            maxAge:1000*60*60*24*7,
+            sameSite:'none',
+            secure:true
         })
         // console.log("success")
         res.clearCookie("gid",{path:"/"})
