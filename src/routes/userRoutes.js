@@ -32,7 +32,8 @@ app.get("/email-verification/:token",(req,res)=>{
         const {email}=jwt.verify(req.params.token,process.env.JWTEMAILSECRET);
         res.cookie("email",email,{
             maxAge:1000*60*10,
-            signed:true
+            signed:true,
+            sameSite:'none'
         })
 
         res.redirect(process.env.FRONTENDURL+"Register");
