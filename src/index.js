@@ -20,7 +20,7 @@ app.use((req,res,next)=>{
     res.header('Access-Control-Allow-Headers', 'X-Requested-With, X-HTTP-Method-Override, Content-Type, Accept');
     next();
 })
-app.enable('trust proxy')
+
 
 //Routers Merge Point
 app.use(userRouter);
@@ -33,6 +33,9 @@ app.options("/*",(req,res)=>{
     res.send();
 })
 
+app.get("/*",(req,res)=>{
+    res.send();
+})
 app.listen(process.env.PORT,()=>{
     console.log(`server running on port ${process.env.PORT}`);
 })
