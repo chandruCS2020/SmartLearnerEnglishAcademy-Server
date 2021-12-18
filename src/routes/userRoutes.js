@@ -83,6 +83,7 @@ app.post("/login-email",async (req,res)=>{
             await user.save();
             res.cookie("sid",user.jwt,{
                 maxAge:1000*60*60*24*7,
+                domain:"localhost",
                 httpOnly:true
             })
             res.send("admin");
@@ -90,6 +91,7 @@ app.post("/login-email",async (req,res)=>{
             await user.save();
             res.cookie("sid",user.jwt,{
                 maxAge:1000*60*60*24*7,
+                domain:"localhost",
                 httpOnly:true
             })
             res.send("login succesfull");
@@ -137,6 +139,7 @@ app.get("/signup-oauth-google-callback",async (req,res)=>{
         },{
             signed:true,
             maxAge:1000*60*10,
+            
         })
         res.redirect("http://localhost:3001/Google-oauth-signup");
     }catch(err){
