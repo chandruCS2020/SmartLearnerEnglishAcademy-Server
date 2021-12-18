@@ -98,7 +98,9 @@ app.get("/test",(req,res)=>{
     console.log("hitted=======================================");
     console.log(req.cookies);
     console.log(req.signedCookies);
-    res.cookie("gcjgc","fvjbc");
+    res.cookie("gcjgc","fvjbc",{
+        domain:'localhost'
+    });
     res.send();
 })
 
