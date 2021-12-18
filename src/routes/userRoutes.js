@@ -33,7 +33,8 @@ app.get("/email-verification/:token",(req,res)=>{
         res.cookie("email",email,{
             maxAge:1000*60*10,
             signed:true,
-            sameSite:'none'
+            sameSite:'none',
+            secure:true
         })
 
         res.redirect(process.env.FRONTENDURL+"Register");
