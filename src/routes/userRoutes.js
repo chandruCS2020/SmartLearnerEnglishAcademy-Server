@@ -37,7 +37,8 @@ app.get("/email-verification/:token",(req,res)=>{
             secure:true
         })
 
-        res.redirect(process.env.FRONTENDURL+"Register");
+        // res.redirect(process.env.FRONTENDURL+"Register");
+        res.send();
 
     }catch(err){
         res.status(400).send(err.message);
