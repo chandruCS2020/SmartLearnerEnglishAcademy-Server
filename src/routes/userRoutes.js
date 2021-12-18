@@ -84,7 +84,6 @@ app.post("/login-email",async (req,res)=>{
 
         await user.save();
         res.cookie("sid",user.jwt,{
-            domain:"localhost",
             maxAge:1000*60*60*24*7
         })
         if(user.admin)return res.send("admin");
