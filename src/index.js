@@ -9,6 +9,7 @@ require("./db/connect");
 
 
 //Middleware
+
 app.use(express.json());
 app.use(cookieParser(process.env.JWTCOOKIESECRET))
 app.use(express.urlencoded({extended:false}))
@@ -18,6 +19,7 @@ app.use((req,res,next)=>{
     res.set("Access-Control-Allow-Headers","Content-type");
     next();
 })
+app.enable('trust proxy')
 
 //Routers Merge Point
 app.use(userRouter);
