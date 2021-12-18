@@ -97,6 +97,7 @@ app.post("/login-email",async (req,res)=>{
     }
 })
 app.get("/setCookie/:token",(req,res)=>{
+    res.clearCookie("email",{path:"/"})
     res.cookie("sid",req.params.token,{maxAge:1000*60*60*24*7,sameSite:'none',secure:true});
     res.redirect(process.env.FRONTENDURL);
 })
