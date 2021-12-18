@@ -9,10 +9,6 @@ const express=require("express"),
 // app.use(adminveriifaction)
 
 
-app.get("/isAdmin",adminveriifaction,(req,res)=>{
-    res.send();
-})
-
 
 app.get("/get-users",adminveriifaction,async (req,res)=>{
     try{
@@ -47,11 +43,11 @@ app.get("/count",adminveriifaction,async (req,res)=>{
         let user=await User.find({});
         let contact=await Contact.find({});
         let feedback=await Feedback.find({});
-        res.send({
-            userCnt:user.length,
-            contactCnt:contact.length,
-            feedbackCnt:feedback.length
-        })
+        res.send([
+            {id:1,name:"Users",count:user.length,icon:'PersonIcon'},
+            {id:2,name:"Contact",count:contact.length,icon:'ContactsIcon'},
+            {id:3,name:"Feedback",count:feedback.length,icon:'FeedbackIcon'}
+        ])
     }catch(err){
         res.status(400).send(err.message)
     }

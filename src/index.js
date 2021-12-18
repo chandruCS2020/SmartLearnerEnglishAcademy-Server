@@ -30,6 +30,13 @@ app.options("/*",(req,res)=>{
     res.send();
 })
 
+
+
+app.get("/*",(req,res)=>{
+    res.send();
+})
+
+
 app.listen(process.env.PORT,()=>{
     console.log(`server running on port ${process.env.PORT}`);
 })

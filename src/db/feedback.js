@@ -23,7 +23,7 @@ const feedbackSchema=new mongoose.Schema({
         min:0,
         max:5
     }
-})
+},{timestamps:true})
 
 const FeedBack=mongoose.model("feedback",feedbackSchema);
 

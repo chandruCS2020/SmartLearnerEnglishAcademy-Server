@@ -13,4 +13,13 @@ app.post("/Feedback",async (req,res)=>{
     }
 })
 
+app.get("/testimonials",async (req,res)=>{
+    try{
+        let feedback=await Feedback.find({}).sort({rating:-1,createdAt:-1}).limit(5);
+        res.send(feedback);
+    }catch(err){
+        res.status(400).send(err.message);
+    }
+})
+
 module.exports=app;

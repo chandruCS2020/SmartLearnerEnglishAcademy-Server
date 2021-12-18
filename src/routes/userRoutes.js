@@ -33,7 +33,7 @@ app.get("/email-verification/:token",(req,res)=>{
             maxAge:1000*60*10,
             signed:true
         })
-        res.send();
+        res.redirect(process.env.FRONTENDURL+"/Register");
     }catch(err){
         res.status(400).send(err.message);
     }
@@ -71,7 +71,7 @@ app.post("/signup-email",isEmailVerified,async (req,res)=>{
 // route -> check email password in db -> error 
 //                                     ->succes -> cookie
 
-app.post("/login-password",async (req,res)=>{
+app.post("/login-email",async (req,res)=>{
     try{
         const {email,password}=req.body;
         let user=await User.findOne({email});
@@ -82,7 +82,9 @@ app.post("/login-password",async (req,res)=>{
             httpOnly:true,
             maxAge:1000*60*60*24*7
         })
-        res.send("login succesfull");
+        if(user.admin)return res.send("admin");
+        // console.log(process.env.)
+        res.send();
     }catch(err){
         res.status(400).send(err.message);
     }
@@ -126,7 +128,7 @@ app.get("/signup-oauth-google-callback",async (req,res)=>{
             signed:true,
             maxAge:1000*60*10,
         })
-        res.send();
+        res.redirect(process.env.FRONTENDURL+"Google-oauth-signup");
     }catch(err){
         res.status(400).send(err);
     }
@@ -148,7 +150,7 @@ app.post("/signup-oauth",isEmailVerified,async (req,res)=>{
             maxAge:1000*60*60*24*7
         })
         res.clearCookie("gid",{path:"/"})
-        return res.send(newUser);
+        return res.send();
     }catch(err){
         if(err.code===11000)return res.status(400).send(`${req.signedCookies.gid.email} is existed`)
         res.status(400).send(err.message);
@@ -188,8 +190,9 @@ app.get("/login-oauth-google-callback",async (req,res)=>{
             httpOnly:true,
             maxAge:1000*60*60*24*7
         })
-        console.log("success")
-        res.send("login succesfull");
+        // console.log("success")
+        res.clearCookie("gid",{path:"/"})
+        res.redirect(process.env.FRONTENDURL);
     }catch(err){
         res.status(400).send(err.message);
     }
