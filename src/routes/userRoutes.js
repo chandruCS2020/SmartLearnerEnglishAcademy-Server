@@ -14,7 +14,7 @@ const express=require("express"),
 app.get("/signup-email",async (req,res)=>{
     try{
         let token=jwt.sign({email:req.query.email},process.env.JWTEMAILSECRET,{expiresIn:60*10});
-        let url=`${req.protocol}://${req.headers.host}/email-verification/${token}`
+        let url=`https://${req.headers.host}/email-verification/${token}`
         // console.log(url);
         await email(req.query.email,process.env.SUBJECT,`<a href=${url} target='_blank'>click here</a>`)
         var computerSciencePortal = "Verification Link has sent to Mail";
@@ -32,6 +32,7 @@ app.get("/email-verification/:token",(req,res)=>{
         const {email}=jwt.verify(req.params.token,process.env.JWTEMAILSECRET);
         res.cookie("email",email,{
             maxAge:1000*60*10,
+            signed:true,
             sameSite:'none',
             secure:true
         })
