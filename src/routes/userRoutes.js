@@ -83,12 +83,12 @@ app.post("/login-email",async (req,res)=>{
         await user.authenticate(password)
 
         await user.save();
-        res.cookie("sid",user.jwt,{
-            maxAge:1000*60*60*24*7
-        })
-        if(user.admin)return res.send("admin");
+        // res.cookie("sid",user.jwt,{
+        //     maxAge:1000*60*60*24*7
+        // })
+        // if(user.admin)return res.send("admin");
         // console.log(process.env.)
-        res.send();
+        res.send(user.jwt);
 
     }catch(err){
         res.status(400).send(err.message);
