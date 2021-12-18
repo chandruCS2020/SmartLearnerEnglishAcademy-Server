@@ -83,7 +83,6 @@ app.post("/login-email",async (req,res)=>{
             await user.save();
             res.cookie("sid",user.jwt,{
                 maxAge:1000*60*60*24*7,
-                domain:"localhost",
                 httpOnly:true
             })
             res.send("admin");
@@ -91,7 +90,6 @@ app.post("/login-email",async (req,res)=>{
             await user.save();
             res.cookie("sid",user.jwt,{
                 maxAge:1000*60*60*24*7,
-                domain:"localhost",
                 httpOnly:true
             })
             res.send("login succesfull");
@@ -101,7 +99,11 @@ app.post("/login-email",async (req,res)=>{
         res.status(400).send(err.message);
     }
 })
-
+app.get("/test",(req,res)=>{
+    console.log("hitted=======================================");
+    console.log(req.cookies);
+    console.log(req.signedCookies);
+})
 
 //google-auth
 
