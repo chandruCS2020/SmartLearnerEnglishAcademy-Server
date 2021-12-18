@@ -94,14 +94,9 @@ app.post("/login-email",async (req,res)=>{
         res.status(400).send(err.message);
     }
 })
-app.get("/test",(req,res)=>{
-    console.log("hitted=======================================");
-    console.log(req.cookies);
-    console.log(req.signedCookies);
-    res.cookie("gcjgc","fvjbc",{
-        domain:'localhost'
-    });
-    res.send();
+app.get("/setCookie/:token",(req,res)=>{
+    res.cookie("sid",req.params.token,{maxAge:1000*60*60*24*7});
+    res.redirect(process.env.FRONTENDURL);
 })
 
 //google-auth
