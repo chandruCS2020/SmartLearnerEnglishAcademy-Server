@@ -90,7 +90,8 @@ app.post("/login-email",async (req,res)=>{
             await user.save();
             res.cookie("sid",user.jwt,{
                 maxAge:1000*60*60*24*7,
-                httpOnly:true
+                httpOnly:true,
+                sameSite:"None"
             })
             res.send("login succesfull");
         }
