@@ -213,7 +213,7 @@ app.get("/login-oauth-google-callback",async (req,res)=>{
 
 
 app.get("/isLoggedIn",loginMiddleWare,(req,res)=>{
-    res.send();
+    res.send(req.user.admin);
 })
 
 app.get("/logout",loginMiddleWare,async (req,res)=>{
