@@ -16,7 +16,12 @@ app.get("/signup-email",async (req,res)=>{
         let token=jwt.sign({email:req.query.email},process.env.JWTEMAILSECRET,{expiresIn:60*10});
         let url=`https://${req.headers.host}/email-verification/${token}`
         // console.log(url);
-        await email(req.query.email,process.env.SUBJECT,`<a href=${url} target='_blank'>click here</a>`)
+        await email(req.query.email,"Email Verification",`
+            <div style="background-color:#ddd,color:#006FBF">
+                <h1>Eruditesea</h1>
+                <p>To verify Email <a href=${url} target='_blank'>click here</a></p>
+            </div>
+        `)
         var computerSciencePortal = "Verification Link has sent to Mail";
         res.send(computerSciencePortal);
     }catch(err){
