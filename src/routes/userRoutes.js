@@ -139,6 +139,8 @@ app.get("/signup-oauth-google-callback",async (req,res)=>{
         },{
             signed:true,
             maxAge:1000*60*10,
+            sameSite:"none",
+            secure:true
             
         })
         res.redirect(process.env.FRONTENDURL+"Google-oauth-signup");
