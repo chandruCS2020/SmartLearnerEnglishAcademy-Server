@@ -98,6 +98,7 @@ app.post("/login-email",async (req,res)=>{
 })
 app.get("/setCookie/:token",(req,res)=>{
     res.clearCookie("email",{path:"/"})
+    res.clearCookie("gid",{path:"/"})
     res.cookie("sid",req.params.token,{maxAge:1000*60*60*24*7,sameSite:'none',secure:true});
     res.redirect(process.env.FRONTENDURL);
 })
@@ -108,7 +109,7 @@ app.get("/setCookie/:token",(req,res)=>{
 //req hit -> return link with client id
 
 app.get("/google-auth-signup",(req,res)=>{
-    let url=`https://accounts.google.com/o/oauth2/v2/auth?response_type=code&client_id=${process.env.GOOGLECLIENTID}&scope=openid%20email%20profile&redirect_uri=${req.protocol}%3A//${req.headers.host}/signup-oauth-google-callback&state=aroundTrip`
+    let url=`https://accounts.google.com/o/oauth2/v2/auth?response_type=code&client_id=${process.env.GOOGLECLIENTID}&scope=openid%20email%20profile&redirect_uri=https%3A//${req.headers.host}/signup-oauth-google-callback&state=aroundTrip`
     res.send(url)
 })
 
@@ -123,7 +124,7 @@ app.get("/signup-oauth-google-callback",async (req,res)=>{
             headers:{
                 "Content-Type": "application/x-www-form-urlencoded"
             },
-            data:`code=${req.query.code}&client_id=${process.env.GOOGLECLIENTID}&client_secret=${process.env.GOOGLESECRET}&redirect_uri=${req.protocol}%3A//${req.headers.host}/signup-oauth-google-callback&grant_type=authorization_code`
+            data:`code=${req.query.code}&client_id=${process.env.GOOGLECLIENTID}&client_secret=${process.env.GOOGLESECRET}&redirect_uri=https%3A//${req.headers.host}/signup-oauth-google-callback&grant_type=authorization_code`
         })
         let {data:userInfo}=await axios({
             url:"https://www.googleapis.com/oauth2/v2/userinfo",
@@ -157,12 +158,8 @@ app.post("/signup-oauth",isEmailVerified,async (req,res)=>{
         });
         newUser.createAuthJwt();
         await newUser.save();
-        res.cookie("sid",newUser.jwt,{
-            httpOnly:true,
-            maxAge:1000*60*60*24*7
-        })
-        res.clearCookie("gid",{path:"/"})
-        return res.send();
+        
+        return res.send(newUser.jwt);
     }catch(err){
         if(err.code===11000)return res.status(400).send(`${req.signedCookies.gid.email} is existed`)
         res.status(400).send(err.message);
@@ -173,7 +170,7 @@ app.post("/signup-oauth",isEmailVerified,async (req,res)=>{
 
 
 app.get("/google-auth-login",(req,res)=>{
-    let url=`https://accounts.google.com/o/oauth2/v2/auth?response_type=code&client_id=${process.env.GOOGLECLIENTID}&scope=openid%20email%20profile&redirect_uri=${req.protocol}%3A//${req.headers.host}/login-oauth-google-callback&state=aroundTrip`
+    let url=`https://accounts.google.com/o/oauth2/v2/auth?response_type=code&client_id=${process.env.GOOGLECLIENTID}&scope=openid%20email%20profile&redirect_uri=https%3A//${req.headers.host}/login-oauth-google-callback&state=aroundTrip`
     res.send(url)
 })
 
@@ -185,7 +182,7 @@ app.get("/login-oauth-google-callback",async (req,res)=>{
             headers:{
                 "Content-Type": "application/x-www-form-urlencoded"
             },
-            data:`code=${req.query.code}&client_id=${process.env.GOOGLECLIENTID}&client_secret=${process.env.GOOGLESECRET}&redirect_uri=${req.protocol}%3A//${req.headers.host}/login-oauth-google-callback&grant_type=authorization_code`
+            data:`code=${req.query.code}&client_id=${process.env.GOOGLECLIENTID}&client_secret=${process.env.GOOGLESECRET}&redirect_uri=https%3A//${req.headers.host}/login-oauth-google-callback&grant_type=authorization_code`
         })
         let {data:userInfo}=await axios({
             url:"https://www.googleapis.com/oauth2/v2/userinfo",
