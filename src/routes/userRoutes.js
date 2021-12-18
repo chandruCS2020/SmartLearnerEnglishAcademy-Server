@@ -92,6 +92,7 @@ app.post("/login-email",async (req,res)=>{
                 maxAge:1000*60*60*24*7,
                 httpOnly:true,
                 sameSite:"none",
+                domain:"herokuapp.com"
             })
             res.send("login succesfull");
         }
