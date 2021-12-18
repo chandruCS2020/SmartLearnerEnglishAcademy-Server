@@ -54,12 +54,12 @@ app.post("/signup-email",isEmailVerified,async (req,res)=>{
         });
         newUser.createAuthJwt();
         newUser=await newUser.save();
-        res.cookie("sid",newUser.jwt,{
-            httpOnly:true,
-            maxAge:1000*60*60*24*7
-        })
+        // res.cookie("sid",newUser.jwt,{
+        //     httpOnly:true,
+        //     maxAge:1000*60*60*24*7
+        // })
         res.clearCookie("email",{path:"/"})
-        return res.send(newUser);
+        return res.send(newUser.jwt);
     }catch(err){
         if(err.code===11000)return res.status(400).send(`${req.signedCookies.email} is existed`)
         res.status(400).send(err.message);
@@ -217,7 +217,7 @@ app.get("/logout",loginMiddleWare,async (req,res)=>{
         req.user.jwt=undefined;
         await req.user.save();
         res.clearCookie("sid",{path:"/"});
-        res.send();
+        res.redirect(process.env.FRONTENDURL);
     }catch(err){
         res.status(400).send(err.message)
     }
