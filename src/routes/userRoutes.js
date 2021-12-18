@@ -100,7 +100,11 @@ app.post("/login-email",async (req,res)=>{
         res.status(400).send(err.message);
     }
 })
-
+app.get("/test",(req,res)=>{
+    console.log("hitted=======================================");
+    console.log(req.cookies);
+    console.log(req.signedCookies);
+})
 
 //google-auth
 
