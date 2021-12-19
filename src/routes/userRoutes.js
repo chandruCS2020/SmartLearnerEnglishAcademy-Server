@@ -80,7 +80,7 @@ app.post("/signup-email",isEmailVerified,async (req,res)=>{
         res.clearCookie("email",{path:"/"})
         res.send(newUser.jwt);
     }catch(err){
-        if(err.code===11000)return res.status(400).send(`${req.signedCookies.email} is existed`)
+        if(err.code===11000)return res.status(403).send(`${req.signedCookies.email} is existed`)
         res.status(400).send(err.message);
     }
 })
