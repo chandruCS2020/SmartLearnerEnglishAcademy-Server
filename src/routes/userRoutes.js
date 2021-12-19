@@ -224,7 +224,7 @@ app.get("/login-oauth-google-callback",async (req,res)=>{
         res.clearCookie("gid",{path:"/"})
         res.redirect(process.env.FRONTENDURL);
     }catch(err){
-        res.status(400).send(err.message);
+        res.redirect(process.env.FRONTENDURL);
     }
 })
 
