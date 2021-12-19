@@ -17,10 +17,22 @@ app.get("/signup-email",async (req,res)=>{
         let url=`https://${req.headers.host}/email-verification/${token}`
         // console.log(url);
         await email(req.query.email,"Email Verification",`
-            <div style="background-color:#ddd,color:#006FBF">
-                <h1>Eruditesea</h1>
-                <p>To verify Email <a href=${url} target='_blank'>click here</a></p>
+            <div class="container" style="background-color: #ddd;text-align: center;max-width: 600px;margin: auto;">
+            <div class="main" style="background-color: #003399;padding: 10%;color: #fff;">
+                <h4 style="font-weight: 400;font-size: 1rem;">THANKS FOR SIGNING UP!</h4>
+                <h2 style="font-weight: bold;font-size: 2rem;">Verify Your E-mail Address</h2>
             </div>
+            <div class="submain" style="padding: 10%;font-weight: 400;color: rgba(0, 0, 0, 0.747);">
+                <h3 >Hi,</h3>
+                <h4 style="line-height: 30px;">You're almost ready to get started.Please click on button below to verify your email address and enjoy exclusive cleaning services with us!</h4>
+                <a style="padding: 15px 40px;border-radius: 4px;  background-color: #FF6600;color: #fff;text-decoration: none;" href=${url} target='_blank'>VERIFY YOUR EMAIL</a>
+                <h3 style="margin-top: 70px;">Thanks,</h3>
+                <h3>The Company Team</h3>
+            </div>
+            <div class="footer" style="background-color: #003399;padding: 3% 10%;color: #fff;">
+                <h4>Copyrights © Company All Rights Reserved</h4>
+            </div>
+        </div>
         `)
         var computerSciencePortal = "Verification Link has sent to Mail";
         res.send(computerSciencePortal);
