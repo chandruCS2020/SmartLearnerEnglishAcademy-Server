@@ -2,7 +2,7 @@ const nodemailer=require("nodemailer");
 
 async function sendEmail(to,subject,body){
     let transporter = nodemailer.createTransport({
-        host: "smtp.gmail.com",
+        host: "smtp.hostinger.com",
         port: 465,
         secure: true,
         auth: {
