@@ -247,7 +247,7 @@ app.get("/logout",loginMiddleWare,async (req,res)=>{
 
 app.post('/registerCourse',async (req,res)=>{
     const forms = new form(req.body);
-    forms.save();
+    await forms.save();
     res.send("Successfully registered");
 })
 
