@@ -1,0 +1,80 @@
+const mongoose=require("mongoose")
+
+const formSchema=new mongoose.Schema({
+    salutation:{
+        type:String,
+        required:true,
+    },
+    Name:{
+        type:String,
+        required:true,
+    },
+    Email:{
+        type:String,
+        required:true,
+    },
+    MobileNumber:{
+        type:String,
+        required:true,
+    },
+    WhatsappNumber:{
+        type:String,
+        required:true,
+    },
+    Experience:{
+        type:String,
+        required:true,
+    },
+    Courses:{
+        type:String,
+        required:true,
+    },
+    InstitutionName:{
+        type:String,
+        required:true,
+    },
+    PhonicsCourses:{
+        type:String,
+    },
+    Qualification:{
+        type:String,
+        required:true,
+    },
+    PhonicsAbout:{
+        type:String,
+    },
+    State:{
+        type:String,
+        required:true,
+    },
+    learntSea:{
+        type:String,
+        required:true,
+    },
+    ReferralType:{
+        type:String,
+        required:true,
+    },
+    Paid:{
+        type:String,
+        required:true,
+    },
+    address:{
+        type:String,
+        required:true,
+    },
+    feedback:{
+        type:String,
+        required:true,
+    },
+    paymentMethod:{
+        type:String,
+        required:true,
+    },
+},{
+    timestamps:true
+});
+
+const Form=mongoose.model("form",formSchema);
+
+module.exports=Form;

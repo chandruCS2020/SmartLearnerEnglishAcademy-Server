@@ -5,7 +5,8 @@ const express=require("express"),
     isEmailVerified=require("../helper/isEmailVerified"),
     User=require("../db/user"),
     axios=require("axios"),
-    loginMiddleWare=require("../helper/loginMiddleWare")
+    loginMiddleWare=require("../helper/loginMiddleWare"),
+    form = require('../db/form');
 
 
 
@@ -244,7 +245,11 @@ app.get("/logout",loginMiddleWare,async (req,res)=>{
     }
 })
 
-
+app.post('/registerCourse',async (req,res)=>{
+    const forms = new form(req.body);
+    forms.save();
+    res.send("Successfully registered");
+})
 
 
 
