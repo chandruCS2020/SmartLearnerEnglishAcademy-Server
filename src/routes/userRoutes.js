@@ -253,7 +253,7 @@ app.post('/registerCourse',async (req,res)=>{
 app.get("/get-forms",async (req,res)=>{
     try{
         let forms=await form.find({}).sort({createdAt:-1});
-        res.send(users);
+        res.send(forms);
     }catch(err){
         res.status(400).send(err.message);
     }
