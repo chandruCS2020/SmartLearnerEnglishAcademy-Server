@@ -3,7 +3,8 @@ const express=require("express"),
     adminveriifaction=require("../helper/adminVerification"),
     Contact=require("../db/contact"),
     User=require("../db/user"),
-    Feedback=require("../db/feedback");
+    Feedback=require("../db/feedback"),
+    form = require('../db/form');
 
 
 // app.use(adminveriifaction)
@@ -29,7 +30,7 @@ app.get("/get-contact",adminveriifaction,async (req,res)=>{
     }
 })
 
-app.get("/get-feedback",async (req,res)=>{
+app.get("/get-feedback",adminveriifaction,async (req,res)=>{
     try{
         let feedback=await Feedback.find({}).sort({rating:-1,createdAt:-1}).limit(15);
         res.send(feedback);
@@ -51,6 +52,15 @@ app.get("/count",adminveriifaction,async (req,res)=>{
     }catch(err){
         res.status(400).send(err.message)
     }
+})
+app.get("/get-forms",adminveriifaction,async (req,res)=>{
+    try{
+        let forms=await form.find({}).sort({createdAt:-1});
+        res.send(forms);
+    }catch(err){
+        res.status(400).send(err.message);
+    }
+    
 })
 
 
