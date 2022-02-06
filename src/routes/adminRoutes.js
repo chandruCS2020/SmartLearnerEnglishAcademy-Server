@@ -29,7 +29,7 @@ app.get("/get-contact",adminveriifaction,async (req,res)=>{
     }
 })
 
-app.get("/get-feedback",adminveriifaction,async (req,res)=>{
+app.get("/get-feedback",async (req,res)=>{
     try{
         let feedback=await Feedback.find({}).sort({rating:-1,createdAt:-1}).limit(15);
         res.send(feedback);
