@@ -12,7 +12,6 @@ async function getEmail(to,subject,body){
     });
     
     transporter.sendMail({
-        from: to, 
         to:process.env.EMAIL, 
         subject,
         html: body
