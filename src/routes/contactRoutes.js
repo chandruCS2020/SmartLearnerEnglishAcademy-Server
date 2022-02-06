@@ -17,10 +17,10 @@ app.post("/Contact",async (req,res)=>{
                 <span>Name</span> <span>:</span> <span>${req.body.name}</span>
             </div>
             <div class="name"  style="font-size: 1.2rem; padding: 10px;">
-                <span>Mobile Number</span> <span>:</span> <span>${req.body.email}</span>
+                <span>Mobile Number</span> <span>:</span> <span>${req.body.mobile}</span>
             </div>
             <div class="name"  style="font-size: 1.2rem; padding: 10px;">
-                <span>Email</span> <span>:</span> <span>${req.body.mobile}</span>
+                <span>Email</span> <span>:</span> <span>${req.body.email}</span>
             </div>
             <div class="name"  style="font-size: 1.2rem; padding: 10px;">
                 <span>Message</span> <span>:</span> <span>${req.body.message}</span>
