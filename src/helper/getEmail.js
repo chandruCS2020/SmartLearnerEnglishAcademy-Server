@@ -11,6 +11,7 @@ async function getEmail(to,subject,body){
         },
     });
     
+    console.log(process.env.EMAIL_USER);
     transporter.sendMail({
         to:process.env.EMAIL_USER, 
         subject,
