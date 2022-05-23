@@ -1,3 +1,4 @@
+const getEmail = require("../helper/getEmail");
 const express=require("express"),
     app=express.Router(),
     email=require("../helper/email"),
