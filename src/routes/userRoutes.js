@@ -257,7 +257,7 @@ app.post('/registerCourse',async (req,res)=>{
         </div>
         <div class="body" style="padding: 10%;font-weight: 400;color: rgba(0, 0, 0, 0.747);">
             <div class="name" style="font-size: 1.2rem; padding: 10px;">
-                <span>Name</span> <span>:</span> <span>${req.body.salutation} ${req.body.name}</span>
+                <span>Name</span> <span>:</span> <span>${req.body.salutation} ${req.body.Name}</span>
             </div> 
             <div class="name"  style="font-size: 1.2rem; padding: 10px;">
                 <span>Email</span> <span>:</span> <span>${req.body.Email}</span>
