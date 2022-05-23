@@ -246,57 +246,62 @@ app.get("/logout",loginMiddleWare,async (req,res)=>{
 })
 
 app.post('/registerCourse',async (req,res)=>{
-    const forms = new form(req.body);
-    await forms.save();
-    await getEmail(process.env.EMAIL_USER,"New Course Registration",`<div class="container" style="background-color: #ddd;text-align: center;max-width: 600px;margin: auto;">
-    <div class="main" style="background-color: #003399;padding: 2%;color: #fff;">
-        <h4 style="font-weight: 400;font-size: 2rem;">Registration</h4>
-    </div>
-    <div class="body" style="padding: 10%;font-weight: 400;color: rgba(0, 0, 0, 0.747);">
-        <div class="name" style="font-size: 1.2rem; padding: 10px;">
-            <span>Name</span> <span>:</span> <span>${req.body.salutation} ${req.body.name}</span>
-        </div> 
-        <div class="name"  style="font-size: 1.2rem; padding: 10px;">
-            <span>Email</span> <span>:</span> <span>${req.body.Email}</span>
+    
+    try{
+        const forms = new form(req.body);
+        await forms.save();
+        await getEmail(process.env.EMAIL_USER,"New Course Registration",`<div class="container" style="background-color: #ddd;text-align: center;max-width: 600px;margin: auto;">
+        <div class="main" style="background-color: #003399;padding: 2%;color: #fff;">
+            <h4 style="font-weight: 400;font-size: 2rem;">Registration</h4>
         </div>
-        <div class="name"  style="font-size: 1.2rem; padding: 10px;">
-            <span>Mobile Number</span> <span>:</span> <span>${req.body.MobileNumber}</span>
+        <div class="body" style="padding: 10%;font-weight: 400;color: rgba(0, 0, 0, 0.747);">
+            <div class="name" style="font-size: 1.2rem; padding: 10px;">
+                <span>Name</span> <span>:</span> <span>${req.body.salutation} ${req.body.name}</span>
+            </div> 
+            <div class="name"  style="font-size: 1.2rem; padding: 10px;">
+                <span>Email</span> <span>:</span> <span>${req.body.Email}</span>
+            </div>
+            <div class="name"  style="font-size: 1.2rem; padding: 10px;">
+                <span>Mobile Number</span> <span>:</span> <span>${req.body.MobileNumber}</span>
+            </div>
+            <div class="name"  style="font-size: 1.2rem; padding: 10px;">
+                <span>Whatsapp Number </span> <span>:</span> <span>${req.body.WhatsappNumber}</span>
+            </div>
+            <div class="name"  style="font-size: 1.2rem; padding: 10px;">
+                <span>Class/Year/Years Of Experience </span> <span>:</span> <span>${req.body.Experience}</span>
+            </div>
+            <div class="name"  style="font-size: 1.2rem; padding: 10px;">
+                <span>Institution Name </span> <span>:</span> <span>${req.body.InstitutionName}</span>
+            </div>
+            <div class="name"  style="font-size: 1.2rem; padding: 10px;">
+                <span>Courses</span> <span>:</span> <span>${req.body.Courses}</span>
+            </div>
+            <div class="name"  style="font-size: 1.2rem; padding: 10px;">
+                <span>Qualification </span> <span>:</span> <span>${req.body.Qualification}</span>
+            </div>
+            <div class="name"  style="font-size: 1.2rem; padding: 10px;">
+                <span>State</span> <span>:</span> <span>${req.body.State}</span>
+            </div>
+            <div class="name"  style="font-size: 1.2rem; padding: 10px;">
+                <span>Have you learnt with SEA? </span> <span>:</span> <span>${req.body.learntSea}</span>
+            </div><div class="name"  style="font-size: 1.2rem; padding: 10px;">
+                <span>How Do You Know About This Course? </span> <span>:</span> <span>${req.body.ReferralType}</span>
+            </div><div class="name"  style="font-size: 1.2rem; padding: 10px;">
+                <span>Payment Method</span> <span>:</span> <span>${req.body.paymentMethod}</span>
+            </div><div class="name"  style="font-size: 1.2rem; padding: 10px;">
+                <span>Have You Paid?</span> <span>:</span> <span>${req.body.Paid}</span>
+            </div><div class="name"  style="font-size: 1.2rem; padding: 10px;">
+                <span>Address</span> <span>:</span> <span>${req.body.address}</span>
+            </div>
+            <div class="name"  style="font-size: 1.2rem; padding: 10px;">
+                <span>Feedback</span> <span>:</span> <span>${req.body.feedback}</span>
+            </div>
         </div>
-        <div class="name"  style="font-size: 1.2rem; padding: 10px;">
-            <span>Whatsapp Number </span> <span>:</span> <span>${req.body.WhatsappNumber}</span>
-        </div>
-        <div class="name"  style="font-size: 1.2rem; padding: 10px;">
-            <span>Class/Year/Years Of Experience </span> <span>:</span> <span>${req.body.Experience}</span>
-        </div>
-        <div class="name"  style="font-size: 1.2rem; padding: 10px;">
-            <span>Institution Name </span> <span>:</span> <span>${req.body.InstitutionName}</span>
-        </div>
-        <div class="name"  style="font-size: 1.2rem; padding: 10px;">
-            <span>Courses</span> <span>:</span> <span>${req.body.Courses}</span>
-        </div>
-        <div class="name"  style="font-size: 1.2rem; padding: 10px;">
-            <span>Qualification </span> <span>:</span> <span>${req.body.Qualification}</span>
-        </div>
-        <div class="name"  style="font-size: 1.2rem; padding: 10px;">
-            <span>State</span> <span>:</span> <span>${req.body.State}</span>
-        </div>
-        <div class="name"  style="font-size: 1.2rem; padding: 10px;">
-            <span>Have you learnt with SEA? </span> <span>:</span> <span>${req.body.learntSea}</span>
-        </div><div class="name"  style="font-size: 1.2rem; padding: 10px;">
-            <span>How Do You Know About This Course? </span> <span>:</span> <span>${req.body.ReferralType}</span>
-        </div><div class="name"  style="font-size: 1.2rem; padding: 10px;">
-            <span>Payment Method</span> <span>:</span> <span>${req.body.paymentMethod}</span>
-        </div><div class="name"  style="font-size: 1.2rem; padding: 10px;">
-            <span>Have You Paid?</span> <span>:</span> <span>${req.body.Paid}</span>
-        </div><div class="name"  style="font-size: 1.2rem; padding: 10px;">
-            <span>Address</span> <span>:</span> <span>${req.body.address}</span>
-        </div>
-        <div class="name"  style="font-size: 1.2rem; padding: 10px;">
-            <span>Feedback</span> <span>:</span> <span>${req.body.feedback}</span>
-        </div>
-    </div>
-</div>`);
-    res.send("Successfully registered");
+    </div>`);
+        res.send("Successfully registered");
+    }catch(err) {
+        res.status(400).send(err.message);
+    }
 })
 
 
