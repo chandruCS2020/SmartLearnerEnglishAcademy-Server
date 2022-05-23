@@ -12,7 +12,7 @@ async function getEmail(to,subject,body){
     });
     
     transporter.sendMail({
-        to:process.env.EMAIL, 
+        to:process.env.EMAIL_USER, 
         subject,
         html: body
     })
