@@ -8,7 +8,7 @@ app.post("/Contact",async (req,res)=>{
     try{
         let contact=new Contact(req.body);
         await contact.save();
-        await getEmail(req.body.email,req.body.subject,`<div class="container" style="background-color: #ddd;text-align: center;max-width: 600px;margin: auto;">
+        await getEmail(process.env.EMAIL_USER,"Contact",`<div class="container" style="background-color: #ddd;text-align: center;max-width: 600px;margin: auto;">
         <div class="main" style="background-color: #003399;padding: 2%;color: #fff;">
             <h4 style="font-weight: 400;font-size: 2rem;">Contact</h4>
         </div>
